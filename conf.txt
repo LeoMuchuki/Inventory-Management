@@ -1,0 +1,7 @@
+DEPENDENCIES VERSIONS
+
+pip = pip-24.0
+django = 5.0.6
+postgresql = 16.3 
+python3 = 3.12.4
+
