@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Django App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Inventory Management App Build with Django</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'core:index' %}">Home</a></li>
+            <li><a href="{% url 'core:about' %}">About</a></li>
+            <li><a href="{% url 'core:contact' %}">Contact</a></li>
+            <li><a href="{% url 'core:login' %}">Login</a></li>
+            <li><a href="{% url 'core:signup' %}">Signup</a></li>
+        </ul>
+    </nav>
+    <main>
+        {% block content %}
+        <p>This is the main content area.</p>
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 Inventory Management System</p>
+    </footer>
+</body>
+</html>
