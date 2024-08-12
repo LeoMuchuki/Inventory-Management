@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}LUCID{% endblock %}
+
+{% block content %}
+  <h1>Logged out</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy}}
+  <input class="btn btn-outline-primary" type="submit"></input>
+<br>
+
+<p class="text-center">You have been logged out <a style="color:rgba(69,
+          255, 145, 1)" href={% url 'core:signin'%}>Login again</a></p>
+{% endblock %}

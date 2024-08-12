@@ -1,12 +1,58 @@
 """ The models module, to define the objects blueprints """
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        """ Super user model """
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self.create_user(email, password, **extra_fields)
+
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    """ Custom user model """
+    email = models.EmailField(blank=True, default='', unique=True)
+#    username = models.CharField(max_length=30, unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    def get_full_name(self):
+        return self.name
+
+    def get_short_name(self):
+        return self.name or self.email.split('0')[0]
+
+    def __str__(self):
+        return self.email
 
 # Create your models here.
 class Product(models.Model):
     """
     The model for all products
     """
-    product_id = models.CharField(primary_key=True, max_length=30)
     name = models.CharField(max_length=100)
     sku = models.CharField(max_length=50, unique=True)
     description = models.TextField()
@@ -26,7 +72,6 @@ class Stock(models.Model):
             ("in", "in"),
             ("out", "out"),
             )
-    stock_id = models.CharField(primary_key=True, max_length=30)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     date = models.DateField(auto_now_add=True)
@@ -39,7 +84,6 @@ class Supplier(models.Model):
     """
     The suppliers model
     """
-    supplier_id = models.CharField(primary_key=True, max_length=30)
     name = models.CharField(max_length=100)
     contact_info = models.TextField()
     products_supplied = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -47,18 +91,20 @@ class Supplier(models.Model):
     def __str__(self):
         return f"name: {self.name} contact_info: {self.contact_info}"
 
+"""
 class User(models.Model):
-    """
-    The users model
-    """
+    #The users model
     ROLE_CHOICES = (
             ("admin", "admin"),
             ("user", "user"),
             )
-    user_id = models.CharField(primary_key=True, max_length=30)
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=15)
     role = models.CharField(max_length=5, choices=ROLE_CHOICES)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.CharField(max_length=50)
 
     def __str__(self):
         return f"name: {self.username}, role: {self.role}"
+"""

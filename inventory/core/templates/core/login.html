@@ -1,8 +1,17 @@
 {% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
 
-{% block title %}Contact Us{% endblock %}
+{% block title %}LUCID{% endblock %}
 
 {% block content %}
-<h2>Log in</h2>
-<p>This is the log in page.</p>
+<div class="container py-5">
+  <h1>Log in</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-outline-primary" type="submit" value="log in"></input>
+  </form>
+<p class="text-center">If you don't have an account, <a style="color:rgba(69,
+          255, 145, 1)" href={% url 'core:signup'%}>Register here</a></p>
+</div>
 {% endblock %}
