@@ -27,7 +27,7 @@ class EditProduct(forms.Form):
     price = forms.IntegerField
 
 class LoginForm(AuthenticationForm):
-    email = forms.EmailField(
+    username = forms.EmailField(
         max_length=100,
         required=True,
         widget=forms.TextInput(
@@ -52,21 +52,36 @@ class LoginForm(AuthenticationForm):
     )
 
     class Meta:
-        model = User
+        model = user
         fields = ["email", "password"]
 
 
 class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(
+            max_length=50,
+            required=True,
+            widget=forms.TextInput(
+                attrs={
+                    "placeholder": "First Name"
+                    }))
+    last_name = forms.CharField(
+            max_length=50,
+            required=True,
+            widget=forms.TextInput(
+                attrs={
+                    "placeholder": "Last Name"
+                    }))
     email = forms.EmailField(
         max_length=100,
         required=True,
-        widget=forms.TextInput(
+        widget=forms.EmailInput(
             attrs={
                 "placeholder": "Email",
                 "class": "form-control",
             }
         ),
     )
+
     password1 = forms.CharField(
         max_length=50,
         required=True,
@@ -97,17 +112,17 @@ class SignUpForm(UserCreationForm):
     )
 
     class Meta:
-        model = User
-        fields = ["email", "password1", "password2"]
+        model = user
+        fields = ["first_name", "last_name", "email", "password1", "password2"]
 
 # CustomUserChangeForm for admin user change
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
-        model = User
+        model = user
         fields = ['email', 'first_name', 'last_name', 'is_active', 'is_staff']
 
 # CustomUserCreationForm for admin user creation
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
-        model = User
+        model = user
         fields = ['email', 'first_name', 'last_name', 'password1', 'password2']

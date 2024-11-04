@@ -58,9 +58,9 @@ def signup(request):
             email = form.cleaned_data.get('email')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(email=email, password=raw_password)
-            if user is not none:
+            if user is not None:
                 login(request, user)
-                return redirect('')
+                return redirect('core/new_product.html')
     else:
         form = SignUpForm()
     return render(request, "core/signup.html", {"form": form})

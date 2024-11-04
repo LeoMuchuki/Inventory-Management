@@ -27,28 +27,26 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """ Custom user model """
     email = models.EmailField(blank=True, default='', unique=True)
-#    username = models.CharField(max_length=30, unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
-    def get_full_name(self):
-        return self.name
+#    def get_full_name(self):
+#        return self.name
 
-    def get_short_name(self):
-        return self.name or self.email.split('0')[0]
+#    def get_short_name(self):
+#        return self.name or self.email.split('0')[0]
 
     def __str__(self):
         return self.email
 
-# Create your models here.
 class Product(models.Model):
     """
     The model for all products
@@ -90,21 +88,3 @@ class Supplier(models.Model):
 
     def __str__(self):
         return f"name: {self.name} contact_info: {self.contact_info}"
-
-"""
-class User(models.Model):
-    #The users model
-    ROLE_CHOICES = (
-            ("admin", "admin"),
-            ("user", "user"),
-            )
-    username = models.CharField(max_length=30)
-    password = models.CharField(max_length=15)
-    role = models.CharField(max_length=5, choices=ROLE_CHOICES)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"name: {self.username}, role: {self.role}"
-"""
