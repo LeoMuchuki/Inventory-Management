@@ -2,4 +2,3 @@ use "if user.is_authenticated" in html file to toggle between login form and the
 in the home view, check whether the request is a get or a post request. If it's
 a post request, it's likely to be a form submission and I should try to extract
 the data from it. If it's a get request, they are just requesting the webpage.
-__
