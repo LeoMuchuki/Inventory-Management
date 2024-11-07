@@ -9,9 +9,21 @@
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
+    <label>
+        <input type="checkbox" onclick="togglePasswordVisibility()"> Show Password
+    </label>
     <input class="btn btn-outline-primary" type="submit" value="log in"></input>
   </form>
 <p class="text-center">If you don't have an account, <a style="color:rgba(69,
           255, 145, 1)" href={% url 'core:signup'%}>Register here</a></p>
 </div>
 {% endblock %}
+
+<script>
+  function togglePasswordVisibility() {
+    const passwordField = document.querrySelectorAll('input[name="password"]);
+    if (passwordField) {
+      passwordField.type = passwordField.type === "password" ? "text" : "password";
+    });
+  }
+</script>

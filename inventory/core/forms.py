@@ -4,7 +4,7 @@ from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout, Field, HTML
 from django.contrib.auth import get_user_model
 
 user = get_user_model()
@@ -54,6 +54,22 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = user
         fields = ["email", "password"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+                'username',
+                Field('password', css_class='form-control'),
+                HTML("""
+                <label>
+                    <input type="checkbox" onclick="togglePasswordVisibility()"> Show Password
+                </label>
+                """),
+                Submit('submit', 'login')
+                )
+
+
 
 
 class SignUpForm(UserCreationForm):

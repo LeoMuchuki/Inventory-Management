@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib.auth.hashers import make_password
 from .models import Product, CustomUser, Supplier, Stock
 from .forms import LoginForm, SignUpForm
@@ -35,6 +35,11 @@ def index(request):
             }
     return render(request, "core/index.html", context)
 
+@login_required
+def dashboard(request):
+    return render(request, 'core/dashboard.html')
+
+
 def about(request):
     """ About me """
     return render(request, "core/about.html")
@@ -46,9 +51,16 @@ def contact(request):
 class CustomLoginView(LoginView):
     template_name = "core/login.html"
     authentication_form = LoginForm
+#    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('core:dashboard')
+
+
+
 
 class CustomLogoutView(LogoutView):
-    template_name = "core/loged_out.html"
+    next_page = reverse_lazy('core:login')
 
 def signup(request):
     if request.method == "POST":
